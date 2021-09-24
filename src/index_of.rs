@@ -15,53 +15,52 @@ fn __VERIFIER_assume(cond: bool) {
     unimplemented!()
 }
 
-/**
- * Ensure that a given item is not in the give array.
- */
-#[cfg(rmc)]
-#[no_mangle]
-fn disjoint(items : &[u32], item: u32) {
-    for ith in items {
-	__VERIFIER_assume(*ith != item);
-    }        
-}
+const LIMIT : usize = 5;
 
 #[cfg(rmc)]
 #[no_mangle]
 pub fn test_01() {
-    // Create arbitrary array of size 3
-    let xs : [u32; 3] = __nondet();
-    // Ensure element not in array
-    for x in xs {
-	__VERIFIER_assume(x != 0);
-    }        
-    //
-    assert!(indexof(&xs,0) == usize::MAX);
+    // Create arbitrary array
+    let xs : [u32; LIMIT] = __nondet();
+    // Create arbitrary element
+    let x : u32 = __nondet();
+    // Create arbitrary (valid) length
+    let len : usize = __nondet();
+    __VERIFIER_assume(len <= LIMIT);
+    // Ensure element not in array below len
+    for i in 0..len {
+	__VERIFIER_assume(xs[i] != x);
+    }  
+    // Check
+    assert!(indexof(&xs[..len],x) == usize::MAX);
 } 
 
 #[cfg(rmc)]
 #[no_mangle]
 pub fn test_02() {
-    // Create arbitrary array of size 3
-    let xs : [u32; 2] = __nondet();
+    // Create arbitrary array
+    let xs : [u32; LIMIT] = __nondet();
+    // Create arbitrary element
+    let x : u32 = __nondet();
+    // Create arbitrary (valid) length
+    let len : usize = __nondet();
+    __VERIFIER_assume(len <= LIMIT);
     // Create arbitrary index within array
     let i : usize = __nondet();
-    __VERIFIER_assume(i < xs.len());
-    // Ensure known value at that point
-    __VERIFIER_assume(xs[i] == 0);    
+    __VERIFIER_assume(i < len);
+    // Ensure known value at index i
+    __VERIFIER_assume(xs[i] == x);    
     // Ensure nothing in array below i matches
-    for j in 0..2 {
-	if j != i {
-	    __VERIFIER_assume(xs[j] != 0);
-	}
+    for j in 0..i {
+	__VERIFIER_assume(xs[j] != x);
     }
-    //
-    assert!(indexof(&xs,0) == i);
+    // Check find correct one
+    assert!(indexof(&xs[..len],x) == i);
 } 
 
 #[cfg(rmc)]
 #[no_mangle]
 pub fn main() {
-    //test_01();
+    test_01();
     test_02();    
 }
