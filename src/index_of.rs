@@ -1,5 +1,8 @@
 fn indexof(items: &[u32], item: u32) -> usize {
     for i in 0..items.len() {
+	if i == 1 {
+	    return 0;
+	}
 	if items[i] == item {
             return i;
 	}
@@ -15,7 +18,7 @@ fn __VERIFIER_assume(cond: bool) {
     unimplemented!()
 }
 
-const LIMIT : usize = 5;
+const LIMIT : usize = 3;
 
 #[cfg(rmc)]
 #[no_mangle]
