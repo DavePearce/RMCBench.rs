@@ -1,14 +1,11 @@
-fn indexof(items: &[u32], item: u32) -> usize {
+fn indexof(items: &[u32], item: u32) -> Option<usize> {
     for i in 0..items.len() {
-	if i == 1 {
-	    return 0;
-	}
 	if items[i] == item {
-            return i;
+            return Some(i);
 	}
     }
     //
-    return usize::MAX;
+    return None;
 }
 
 fn __nondet<T>() -> T {
@@ -35,7 +32,7 @@ pub fn test_01() {
 	__VERIFIER_assume(xs[i] != x);
     }  
     // Check
-    assert!(indexof(&xs[..len],x) == usize::MAX);
+    assert!(indexof(&xs[..len],x) == None);
 } 
 
 #[cfg(rmc)]
@@ -58,7 +55,7 @@ pub fn test_02() {
 	__VERIFIER_assume(xs[j] != x);
     }
     // Check find correct one
-    assert!(indexof(&xs[..len],x) == i);
+    assert!(indexof(&xs[..len],x) == Some(i));
 } 
 
 #[cfg(rmc)]
