@@ -10,8 +10,7 @@ fn indexof(items: &[u32], item: u32) -> Option<usize> {
 
 const LIMIT : usize = 3;
 
-#[cfg(rmc)]
-#[no_mangle]
+#[rmc::proof]
 pub fn test_01() {
     // Create arbitrary array
     let xs : [u32; LIMIT] = rmc::nondet();
@@ -28,8 +27,7 @@ pub fn test_01() {
     assert!(indexof(&xs[..len],x) == None);
 } 
 
-#[cfg(rmc)]
-#[no_mangle]
+#[rmc::proof]
 pub fn test_02() {
     // Create arbitrary array
     let xs : [u32; LIMIT] = rmc::nondet();
